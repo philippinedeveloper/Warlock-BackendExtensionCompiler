@@ -34,10 +34,3 @@ jobs:
         # Upload the AIX files
         name: aix
         path: "appinventor/components/build/extensions/*.aix"
-        
-    - name: Upload Documentation
-      uses: actions/upload-artifact@v4
-      with:
-        name: documentation
-        path: "appinventor/components/build/extensions/docs/*.md"
-        if-no-files-found: warn
