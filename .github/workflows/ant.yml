@@ -33,7 +33,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-artifact
-        path: out
+        path: appinventor/components/build/components/*.aix
         if-no-files-found: warn
         retention-days: 30
         compression-level: 6
