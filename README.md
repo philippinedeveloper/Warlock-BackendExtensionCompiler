@@ -28,7 +28,7 @@ UsesLibraries annotation
 
 <a href="https://philippinedeveloper.github.io/DocumentationWarlock/">Documentation generator</a>
 
-Migration (Upcoming)
+<a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler/wiki/How-to-Migrate%3F-(ONLY-for-THOSE-who-INSTALLED-Warlock)"><b>How to Migrate? - Warlock Wiki</b></a>
 
 # How to use?
 
