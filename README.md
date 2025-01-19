@@ -26,6 +26,10 @@ SimpleObject annotation
 
 UsesLibraries annotation
 
+Documentation generator
+
+Migration (Upcoming)
+
 # How to use?
 
 Well, head to our wiki, to find out!
