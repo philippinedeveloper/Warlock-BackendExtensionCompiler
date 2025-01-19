@@ -418,14 +418,11 @@
     </java>
   </target>
 
-  <!-- =====================================================================
-     Generate Documentation: Generate markdown documentation for extensions.
-     ===================================================================== -->
 <target name="generate-docs" depends="dexAllExtensions">
     <java classname="com.google.appinventor.components.scripts.MarkdownDocumentationGenerator"
           fork="true">
-        <arg value="md" /> 
-        <arg value="${Extensions.dir}/docs" /> 
+        <arg value="md" />  <!-- This specifies markdown output -->
+        <arg value="${Extensions.dir}/docs" />  <!-- Make sure this path is correct -->
         <classpath>
             <pathelement location="${lib.dir}/json/json.jar" />
             <pathelement location="${ExternalComponentGenerator-class.dir}" />
