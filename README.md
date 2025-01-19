@@ -8,9 +8,9 @@ Java 11 for creating extensions
 
 Helper blocks
 
-D8 for dexing
+DX & D8 for dexing
 
-Progaurd for protecting from decompiling & for optimizing
+Progaurd for protecting from decompiling, for optimizing/shrinking, obfuscating & preverifier.
 
 Android 34-sdk level
 
