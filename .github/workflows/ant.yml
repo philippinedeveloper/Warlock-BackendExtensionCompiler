@@ -24,7 +24,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Build with Ant
-      run: ant -buildfile build.xml
+      run: ant -buildfile appinventor/components/build.xml
       env:
         JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.25-9/x64
         JAVA_HOME_11_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.25-9/x64
