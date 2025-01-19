@@ -23,3 +23,5 @@ UsesLibraries annotation
 # How to use?
 
 Well, head to our wiki, to find out!
+
+<a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler.wiki.git"><b>Warlock Wiki</b></a>
