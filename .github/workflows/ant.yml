@@ -30,13 +30,9 @@ jobs:
       env:
         JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.25-9/x64
 
-    # Debug: List all generated files
-    - name: List Generated Files
-      run: find appinventor/ -type f
-
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: aix-artifacts
-        path: "**/*.aix" # Searches all directories for .aix files
+        path: "appinventor/components/build/extensions/*.aix"
         if-no-files-found: warn
