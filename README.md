@@ -26,7 +26,7 @@ SimpleObject annotation
 
 UsesLibraries annotation
 
-Documentation generator
+<a href="https://philippinedeveloper.github.io/DocumentationWarlock/">Documentation generator</a>
 
 Migration (Upcoming)
 
