@@ -24,4 +24,4 @@ UsesLibraries annotation
 
 Well, head to our wiki, to find out!
 
-<a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler.wiki"><b>Warlock Wiki</b></a>
+<a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler/wiki"><b>Warlock Wiki</b></a>
