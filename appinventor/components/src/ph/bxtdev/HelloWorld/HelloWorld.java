@@ -13,7 +13,7 @@ import com.google.appinventor.components.runtime.EventDispatcher;
         description = "",
         category = ComponentCategory.EXTENSION,
         nonVisible = true,
-        iconName = "")
+        iconName = "aiwebres/icon.png")
 
 @SimpleObject(external = true)
 //Libraries
