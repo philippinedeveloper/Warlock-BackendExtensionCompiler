@@ -530,7 +530,7 @@
     />
   </target>
 
-  <target name="extensions" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions, generate-docs">
+  <target name="extensions" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
     <mkdir dir="${Extensions.dir}" />
     <foreach target="packExtension" param="extension" inheritall="true">
       <path>
