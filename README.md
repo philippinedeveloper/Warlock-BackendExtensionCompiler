@@ -34,4 +34,6 @@ Migration (Upcoming)
 
 Well, head to our wiki, to find out!
 
-<a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler/wiki"><b>Warlock Wiki</b></a>
+<a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler/wiki"><b>Warlock Wiki Homepage</b></a>
+
+<a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler/wiki/How-to-Migrate%3F-(ONLY-for-THOSE-who-INSTALLED-Warlock)"><b>How to Migrate? - Warlock Wiki</b></a>
