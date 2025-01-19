@@ -25,21 +25,31 @@ if exist "%sourcePath%" (
         mkdir "%destinationPath%"
     )
     
-    :: Use FOR loop to find and move the folders inside src
+    :: Use FOR loop to find and move the folders and Java files inside src
     for /d %%F in ("%sourcePath%\*") do (
         echo Moving folder %%F to %destinationPath%
         move "%%F" "%destinationPath%"
     )
     
-    echo Source folders moved successfully!
+    for %%F in ("%sourcePath%\*.java") do (
+        echo Moving Java file %%F to %destinationPath%
+        move "%%F" "%destinationPath%"
+    )
+    
+    echo Source folders and Java files moved successfully!
 ) else (
     echo ERROR: Source folder not found. Please check the project folder path.
 )
 
-:: Check if the picture file exists and move the icon to aiwebres
+:: Check if the aiwebres folder exists; if not, create it
+if not exist "%aiwebresPath%" (
+    echo aiwebres folder not found. Creating: %aiwebresPath%
+    mkdir "%aiwebresPath%"
+)
+
+:: Check if the picture file exists and move the picture to aiwebres
 if exist "%picturePath%" (
     echo Moving picture file to aiwebres folder...
-    mkdir "%aiwebresPath%"
     move "%picturePath%" "%aiwebresPath%"
     echo Picture file moved successfully!
 ) else (
@@ -48,3 +58,4 @@ if exist "%picturePath%" (
 
 :: Pause to display the result
 pause
+
