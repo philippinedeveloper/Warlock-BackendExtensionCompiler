@@ -419,6 +419,21 @@
   </target>
 
   <!-- =====================================================================
+     Generate Documentation: Generate markdown documentation for extensions.
+     ===================================================================== -->
+<target name="generate-docs" depends="dexAllExtensions">
+    <java classname="com.google.appinventor.components.scripts.MarkdownDocumentationGenerator"
+          fork="true">
+        <arg value="md" /> <!-- You can set this to markdown if you want markdown output -->
+        <arg value="${public.build.dir}/docs" /> <!-- Where you want to output the docs -->
+        <classpath>
+            <pathelement location="${lib.dir}/json/json.jar" />
+            <pathelement location="${ExternalComponentGenerator-class.dir}" />
+        </classpath>
+    </java>
+</target>
+
+  <!-- =====================================================================
         unjarAllExtensionLibraries : Unjarring extension's library in order for the extensions'dex to work properly.
         ===================================================================== -->
   <target name="unjarAllExtensionLibraries" depends="ExternalComponentGenerator">
