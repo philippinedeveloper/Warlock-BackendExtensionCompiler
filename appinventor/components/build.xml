@@ -401,6 +401,10 @@
       <include name="${components.pkg}/scripts/ComponentProcessor.java" />
       <include name="${components.pkg}/scripts/ExternalComponentGenerator.java" />
       <include name="${components.pkg}/scripts/MarkdownDocumentationGenerator.java" />
+      <include name="${components.pkg}/annotations/*.java" />
+      <include name="${components.pkg}/annotations/androidmanifest/*.java" />
+      <include name="${components.pkg}/runtime/*.java" />
+      <include name="${components.pkg}/runtime/collect/*.java" />
       <classpath>
         <pathelement location="${lib.dir}/json/json.jar" />
       </classpath>
