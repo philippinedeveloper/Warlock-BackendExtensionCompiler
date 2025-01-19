@@ -1,6 +1,6 @@
 # What is Warlock?
 
-**Warlock** is an MIT App Inventor Extension Builder that builds extensions. It doesn't need to be downloaded unlike Appinventor-Sources & It does not need Apache Ant at all!.
+**Warlock** is an MIT App Inventor Extension Builder that builds extensions. It doesn't need to be installed unlike Appinventor-Sources & It does not need Apache Ant at all!, The installation of Warlock offline is Optional, but I would reccomend building extensions using Warlock online.
 
 Supports:
 
