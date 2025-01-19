@@ -424,8 +424,8 @@
 <target name="generate-docs" depends="dexAllExtensions">
     <java classname="com.google.appinventor.components.scripts.MarkdownDocumentationGenerator"
           fork="true">
-        <arg value="md" /> <!-- You can set this to markdown if you want markdown output -->
-        <arg value="${public.build.dir}/docs" /> <!-- Where you want to output the docs -->
+        <arg value="md" /> 
+        <arg value="${Extensions.dir}/docs" /> 
         <classpath>
             <pathelement location="${lib.dir}/json/json.jar" />
             <pathelement location="${ExternalComponentGenerator-class.dir}" />
