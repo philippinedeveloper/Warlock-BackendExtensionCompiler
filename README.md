@@ -4,7 +4,13 @@
 
 Supports:
 
-Java 11 for creating extensions 
+Java 8 for creating extensions (dx)
+
+Java 11 for creating extensions (d8)
+
+Offline extension building
+
+Online extension building
 
 Helper blocks
 
@@ -12,7 +18,7 @@ DX & D8 for dexing
 
 Progaurd for protecting from decompiling, for optimizing/shrinking, obfuscating & preverifier.
 
-Android 34-sdk level
+Android 34-sdk level (mainly because of updated libraries.)
 
 DesignerComponent annotation
 
