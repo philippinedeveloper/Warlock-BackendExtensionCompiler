@@ -1,5 +1,3 @@
-# This workflow builds a Java project with Ant for the MIT App Inventor repository.
-
 name: Build Extension
 
 on:
@@ -33,6 +31,13 @@ jobs:
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: aix-artifacts
+        # Upload the AIX files
+        name: aix
         path: "appinventor/components/build/extensions/*.aix"
+        
+    - name: Upload Documentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: "appinventor/components/build/extensions/docs/*.md"
         if-no-files-found: warn
