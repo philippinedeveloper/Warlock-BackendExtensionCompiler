@@ -13,31 +13,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Check out the repository code.
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # Step 2: Set up the Java Development Kit (JDK) 11.
     - name: Set up JDK 11
       uses: actions/setup-java@v4
       with:
         java-version: '11'
         distribution: 'temurin'
 
-    # Step 3: Install Ant (if not pre-installed).
     - name: Install Ant
       run: sudo apt-get update && sudo apt-get install -y ant
 
-    # Step 4: Build the project using Ant.
     - name: Build with Ant
       run: ant -buildfile appinventor/build.xml extensions
       env:
         JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.25-9/x64
 
-    # Step 5: Upload the generated `.aix` extension files as artifacts.
+    # Debug: List all generated files
+    - name: List Generated Files
+      run: find appinventor/ -type f
+
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: aix-artifacts
-        path: appinventor/components/build/extensions/*.aix
+        path: "**/*.aix" # Searches all directories for .aix files
         if-no-files-found: warn
