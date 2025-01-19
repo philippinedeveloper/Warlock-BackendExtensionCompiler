@@ -399,8 +399,6 @@
     <mkdir dir="${ExternalComponent-class.dir}" />
     <ai.javac destdir="${ExternalComponentGenerator-class.dir}">
       <include name="${components.pkg}/scripts/ExternalComponentGenerator.java" />
-      <include name="${components.pkg}/runtime/*.java" />
-      <include name="${components.pkg}/runtime/collect/*.java" />
       <classpath>
         <pathelement location="${lib.dir}/json/json.jar" />
       </classpath>
