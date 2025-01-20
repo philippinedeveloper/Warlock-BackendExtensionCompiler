@@ -40,8 +40,6 @@
   <property name="ExternalComponentGenerator-class.dir" location="${class.dir}/ExternalComponentGenerator" />
   <property name="ExternalComponent.dir" location="${local.build.dir}/externalComponents" />
   <property name="ExternalComponent-class.dir" location="${local.build.dir}/externalComponents-class" />
-  <property name="Extensions.dir" location="${local.build.dir}/extensions" />
-  <!-- Can be used by extension authors to use the old-style AIX package layout -->
   <property name="extensions.packagefqcn" value="false" />
 
   <!-- =====================================================================
@@ -522,7 +520,7 @@
        ===================================================================== -->
   <target name="packExtension">
     <basename property="extensionType" file="${extension}" />
-    <zip destfile="${Extensions.dir}/${extensionType}.aix"
+    <zip destfile="${local.build.dir}/${extensionType}.aix"
          basedir="${ExternalComponent.dir}"
          includes="${extensionType}/"
     />
