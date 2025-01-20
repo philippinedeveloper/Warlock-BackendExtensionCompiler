@@ -50,7 +50,7 @@
        attribute looks like this:
        <jar destfile="${local.build.dir}/AnnotationProcessors.jar"
        -->
-  <property name="local.build.dir" location="${basedir}/build" />
+  <property name="local.build.dir" location="${basedir}/aix" />
 
   <!-- class.dir is the directory for class files created by javac. This
        directory is different for each project. Most projects create a separate
