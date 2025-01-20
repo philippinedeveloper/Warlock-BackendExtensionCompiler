@@ -28,6 +28,8 @@ UsesLibraries annotation
 
 <a href="https://philippinedeveloper.github.io/DocumentationWarlock/">Documentation generator</a>
 
+Dependency management
+
 # How to use?
 
 Well, head to our wiki, to find out!
