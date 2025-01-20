@@ -33,4 +33,4 @@ jobs:
       with:
         # Upload the AIX files
         name: aix
-        path: "appinventor/components/build/extensions/*.aix"
+        path: "appinventor/components/aix/*.aix"
