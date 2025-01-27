@@ -24,7 +24,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y ant
 
     - name: Build with Ant
-      run: ant -buildfile appinventor/build.xml extensions -Dproguard=1
+      run: ant -buildfile appinventor/components/build.xml extensions -Dproguard=1
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
