@@ -386,13 +386,10 @@
   </target>
 
 
-   <!-- Define Ivy task -->
-  <taskdef resource="appinventor/ivy.xml" classpath="${ivy.jar}">
-    <classpath>
-      <fileset dir="${lib.dir}/ivy" includes="ivy.jar"/>
-    </classpath>
-  </taskdef>
+  <!-- Define Ivy task -->
+  <taskdef resource="org/apache/ivy/ant/ivy-antlib.xml" classpath="${ivy.jar}" />
 
+  <!-- Define Ivy settings -->
   <ivysettings>
     <resolvers>
       <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
