@@ -7,7 +7,7 @@
      App Inventor component libraries
      ====================================================================== -->
 
-<project name="components" default="all">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns="http://ant.apache.org/schema/ant" name="components" default="all">
   <description>
     App Inventor component libraries
   </description>
