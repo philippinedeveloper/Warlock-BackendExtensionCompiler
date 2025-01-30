@@ -35,3 +35,7 @@ Dependency management
 Well, head to our wiki, to find out!
 
 <a href="https://github.com/philippinedeveloper/WarlockExtensionCompiler/wiki"><b>Warlock Wiki Homepage</b></a>
+
+<b>This fork of Warlock is archived, thanks :) No further editing</b>
+
+Closed 🔒
