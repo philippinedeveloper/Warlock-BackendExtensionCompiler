@@ -386,35 +386,54 @@
   </target>
 
 
-  <!-- =====================================================================
-       ExternalComponentGenerator: create required extension files
-       ===================================================================== -->
-  <target name="ExternalComponentGenerator"
-          description="generate extension files"
-          depends="AndroidRuntime">
-    <mkdir dir="${ExternalComponentGenerator-class.dir}" />
-    <mkdir dir="${ExternalComponent.dir}" />
-    <mkdir dir="${ExternalComponent-class.dir}" />
-    <ai.javac destdir="${ExternalComponentGenerator-class.dir}">
-      <include name="${components.pkg}/scripts/ExternalComponentGenerator.java" />
-      <classpath>
-        <pathelement location="${lib.dir}/json/json.jar" />
-      </classpath>
-    </ai.javac>
-    <java classname="com.google.appinventor.components.scripts.ExternalComponentGenerator">
-      <arg value="${public.build.dir}/simple_components.json" />
-      <arg value="${public.build.dir}/simple_components_build_info.json" />
-      <arg value="${ExternalComponent.dir}"/>
-      <arg value="${AndroidRuntime-class.dir}" />
-      <arg value="${public.deps.dir}"/>
-      <arg value="${ExternalComponent-class.dir}"/>
-      <arg value="${extensions.packagefqcn}"/>
-      <classpath>
-        <pathelement location="${ExternalComponentGenerator-class.dir}" />
-        <pathelement location="${lib.dir}/json/json.jar" />
-      </classpath>
-    </java>
+<taskdef name="ivy" classname="org.apache.ivy.ant.IvyAntTask">
+  <classpath>
+    <fileset dir="${lib.dir}/ivy" includes="ivy.jar"/>
+  </classpath>
+</taskdef>
+
+  <!-- Define the repositories for dependency resolution -->
+  <ivysettings>
+   <resolvers>
+    <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
+    <ibiblio name="jcenter" m2compatible="true" root="https://jcenter.bintray.com/" />
+   </resolvers>
+ </ivysettings>
+
+  <target name="resolveDependencies">
+    <ivy:retrieve file="ivy.xml"/>
   </target>
+     
+ <target name="ExternalComponentGenerator" depends="resolveDependencies">
+  <mkdir dir="${ExternalComponentGenerator-class.dir}" />
+  <mkdir dir="${ExternalComponent.dir}" />
+  <mkdir dir="${ExternalComponent-class.dir}" />
+  
+  <!-- Compile Java code with resolved dependencies -->
+  <ai.javac destdir="${ExternalComponentGenerator-class.dir}">
+    <include name="${components.pkg}/scripts/ExternalComponentGenerator.java" />
+    <classpath>
+      <pathelement location="${lib.dir}/json/json.jar" />
+      <fileset dir="${lib.dir}/ivy/lib" includes="**/*.jar" />
+    </classpath>
+  </ai.javac>
+  
+  <!-- Run the Java task with resolved dependencies -->
+  <java classname="com.google.appinventor.components.scripts.ExternalComponentGenerator">
+    <arg value="${public.build.dir}/simple_components.json" />
+    <arg value="${public.build.dir}/simple_components_build_info.json" />
+    <arg value="${ExternalComponent.dir}"/>
+    <arg value="${AndroidRuntime-class.dir}" />
+    <arg value="${public.deps.dir}"/>
+    <arg value="${ExternalComponent-class.dir}"/>
+    <arg value="${extensions.packagefqcn}"/>
+    <classpath>
+      <pathelement location="${ExternalComponentGenerator-class.dir}" />
+      <pathelement location="${lib.dir}/json/json.jar" />
+      <fileset dir="${lib.dir}/ivy/lib" includes="**/*.jar" />
+    </classpath>
+  </java>
+ </target>
 
   <!-- =====================================================================
         unjarAllExtensionLibraries : Unjarring extension's library in order for the extensions'dex to work properly.
