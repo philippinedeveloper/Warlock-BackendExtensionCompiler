@@ -12,6 +12,8 @@
     App Inventor component libraries
   </description>
 
+  <taskdef resource="org/apache/ivy/ant/ivy-antlib.xml" classpath="${lib.dir}/ivy/ivy.jar"/>
+
   <property name="android.sdk.version" value="34"/>
 
   <target name="all"
@@ -384,10 +386,6 @@
          destfile="${public.deps.dir}/Barcode.jar" />
 
   </target>
-
-
-  <!-- Define Ivy task -->
-  <taskdef resource="org/apache/ivy/ant/ivy-antlib.xml" classpath="${ivy.jar}" />
 
   <!-- Define Ivy settings -->
   <ivysettings>
