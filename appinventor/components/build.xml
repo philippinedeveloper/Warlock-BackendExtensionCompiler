@@ -574,6 +574,7 @@
     r8Optimize: Use R8 to optimize the extension's jar
   ===================================================================== -->
   <target name="r8Optimize" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
+    <taskdef resource="r8/ant/task.properties" classpath="${lib.dir}/r8/r8.jar" />
     <java classname="com.android.tools.r8.D8"
           fork="true"
           failonerror="true">
