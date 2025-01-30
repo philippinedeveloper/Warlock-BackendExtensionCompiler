@@ -457,6 +457,9 @@
          basedir="${ExternalComponent-class.dir}/${extensionClassFolder}"
          includes="**/*.class"
          excludes="*.jar" />
+    <antcall target="ProGuard">
+      <param name="extensionClassFolder" value="${extensionClassFolder}" />
+    </antcall>
     <copy file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar"
           tofile="${ExternalComponent.dir}/${extensionClassFolder}/files/AndroidRuntime.jar"/>
     <echo>Generated build file AndroidRuntime.jar [${extensionClassFolder}]</echo>
@@ -534,81 +537,52 @@
   </target>
 
 
-    <!-- =====================================================================
-       ProGuard: Obfuscates and optimizes using ProGuard
-  ===================================================================== -->
-<target name="ProGuard" unless="skipProguard">
-    <taskdef resource="proguard/ant/task.properties" classpath="${lib.dir}/proguard/proguard.jar" />
+  <!-- =====================================================================
+      ProGuard: obfuscates and minifies the AndroidRuntime.jar file, containing
+                the extensions source code. Only runs if the task has been called
+                like "ant extensions -Dproguard=1".
+       ===================================================================== -->
+
+  <condition property="skipProguard">
+    <not>
+      <equals arg1="${proguard}" arg2="1" />
+    </not>
+  </condition>
+
+  <target name="ProGuard" unless="skipProguard">
+    <taskdef resource="proguard/ant/task.properties"
+             classpath="${lib.dir}/proguard/proguard.jar" />
     <proguard printmapping="${public.build.dir}/proguard.map"
               overloadaggressively="on"
               configuration="${lib.dir}/proguard/proguard.cfg"
               ignorewarnings="false">
-        <injar file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
-        <outjar file="${ExternalComponent-class.dir}/${extensionClassFolder}_p.jar" />
-        <libraryjar>
-            <fileset dir="${public.deps.dir}">
-                <include name="**/*.jar" />
-                <include name="**/*.aar"/>
-                <exclude name="*/dx.jar"/>
-                <exclude name="*/apksigner.jar"/>
-            </fileset>
-        </libraryjar>
-        <libraryjar file="${public.build.dir}/AndroidRuntime.jar" />
-        <dontnote filter="proguard.configuration.ConfigurationLogger" />
-        <adaptresourcefilecontents filter="proguard/ant/task.properties" />
+
+      <injar  file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
+      <outjar file="${ExternalComponent-class.dir}/${extensionClassFolder}_p.jar" />
+
+      <libraryjar>
+        <fileset dir="${public.deps.dir}">
+          <include name="**/*.jar" />
+          <include name="**/*.aar"/>
+          <exclude name="*/dx.jar"/>
+          <exclude name="*/apksigner.jar"/>
+        </fileset>
+      </libraryjar>
+
+      <!-- Android Runtime -->
+      <libraryjar file="${public.build.dir}/AndroidRuntime.jar" />
+
+      <!-- FOR DEVELOPER: Add the needed libraries for your extension right here
+                          like the ones above, just after copying them to the deps
+                          directory.
+      <libraryjar file="${public.deps.dir}/my-awesome-library.jar" /> -->
+
+      <dontnote filter="proguard.configuration.ConfigurationLogger" />
+      <adaptresourcefilecontents filter="proguard/ant/task.properties" />
     </proguard>
 
     <delete file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
     <move file="${ExternalComponent-class.dir}/${extensionClassFolder}_p.jar"
           tofile="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
-</target>
-
-<!-- =====================================================================
-    r8Optimize: Use R8 to optimize the extension's jar
-  ===================================================================== -->
-<target name="r8Optimize" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
-    <taskdef resource="r8/ant/task.properties" classpath="${lib.dir}/r8/r8.jar" />
-    <java classname="com.android.tools.r8.D8" fork="true" failonerror="true">
-        <classpath>
-            <pathelement location="${lib.dir}/r8/r8.jar"/>
-        </classpath>
-        <arg line="--min-api 8"/>
-        <arg value="--output"/>
-        <arg value="${ExternalComponent.dir}/${extensionClassFolder}_r.jar"/>
-        <arg value="${ExternalComponent-class.dir}/${extensionClassFolder}.jar"/>
-        <arg line="--config ${lib.dir}/proguard/proguard.cfg"/>
-        <arg line="--dontwarn"/>
-    </java>
-
-    <echo>Optimized extension using R8: ${extensionClassFolder}</echo>
-    <delete file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
-    <move file="${ExternalComponent.dir}/${extensionClassFolder}_r.jar"
-          tofile="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
-</target>
-
-<!-- =====================================================================
-    optimizeExtension: Choose whether to use ProGuard or R8 for optimization
-  ===================================================================== -->
-<target name="optimizeExtensions" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
-    <condition property="useProGuard" value="false">
-        <equals arg1="${optimizeMethod}" arg2="proguard"/>
-    </condition>
-
-    <target if="useProGuard" refid="ProGuard"/>
-    <target unless="useProGuard" refid="r8Optimize"/>
-</target>
-
-<!-- =====================================================================
-    extensionsOptimize: Build the extensions (choose optimizer)
-  ===================================================================== -->
-<target name="extensionsOptimize" depends="optimizeExtensions">
-    <foreach target="packExtension" param="extension" inheritall="true">
-        <path>
-            <dirset dir="${ExternalComponent.dir}">
-                <include name="*" />
-            </dirset>
-        </path>
-    </foreach>
-</target>
-
+  </target>
 </project>
