@@ -1,0 +1,13 @@
+<ivy-module version="2.0">
+  <info organisation="ph.bxtdev" module="HelloWorld"/>
+  <dependencies>
+    <dependency org="com.android" name="android" rev="1.0"/>
+    <dependency org="com.google" name="gson" rev="2.8.6"/>
+    <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13"/>
+    <dependency org="org.json" name="json" rev="20210307"/>
+  </dependencies>
+  <repositories>
+    <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/"/>
+    <ibiblio name="jcenter" m2compatible="true" root="https://jcenter.bintray.com/"/>
+  </repositories>
+</ivy-module>
