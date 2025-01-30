@@ -7,53 +7,10 @@
      App Inventor component libraries
      ====================================================================== -->
 
-<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns="http://ant.apache.org/schema/ant" name="components" default="all">
+<project name="components" default="all">
   <description>
     App Inventor component libraries
   </description>
-
-  <taskdef resource="org/apache/ivy/ant/ivy-antlib.xml" classpath="${lib.dir}/ivy/ivy.jar"/>
-
-  <!-- Define Ivy settings -->
-  <ivysettings>
-    <resolvers>
-      <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/"/>
-      <ibiblio name="jcenter" m2compatible="true" root="https://jcenter.bintray.com/"/>
-    </resolvers>
-  </ivysettings>
-
-  <!-- Resolve Dependencies -->
-  <target name="resolveDependencies">
-    <ivy:retrieve file="ivy.xml"/>
-  </target>
-
-  <!-- Merge JAR files from dependencies -->
-  <target name="mergeJars" depends="resolveDependencies">
-    <mkdir dir="out/libs/merged-jars"/>
-    <foreach target="copyJarFiles" param="dependency" inheritall="true">
-      <path>
-        <fileset dir="${ivy.retrieve.dir}">
-          <include name="**/*.jar"/>
-        </fileset>
-      </path>
-    </foreach>
-  </target>
-
-  <target name="copyJarFiles">
-    <copy todir="out/libs/merged-jars">
-      <fileset dir="${ivy.retrieve.dir}">
-        <include name="**/*.jar"/>
-      </fileset>
-    </copy>
-  </target>
-
-  <!-- Combine all JARs into one JAR file -->
-  <target name="combineJars" depends="mergeJars">
-    <mkdir dir="out/libs/combined-jars"/>
-    <jar destfile="out/libs/combined-jars/merged-libraries.jar" basedir="out/libs/merged-jars">
-      <include name="**/*.jar"/>
-    </jar>
-  </target>
 
   <property name="android.sdk.version" value="34"/>
 
@@ -428,7 +385,7 @@
 
   </target>
      
-  <target name="ExternalComponentGenerator" depends="resolveDependencies">
+  <target name="ExternalComponentGenerator">
    <mkdir dir="${ExternalComponentGenerator-class.dir}" />
    <mkdir dir="${ExternalComponent.dir}" />
    <mkdir dir="${ExternalComponent-class.dir}" />
@@ -438,8 +395,6 @@
       <include name="${components.pkg}/scripts/ExternalComponentGenerator.java" />
       <classpath>
          <pathelement location="${lib.dir}/json/json.jar" />
-         <fileset dir="${lib.dir}/ivy" includes="**/*.jar" />
-         <pathelement location="out/libs/combined-jars/merged-libraries.jar" /> <!-- Include merged JAR -->
       </classpath>
    </ai.javac>
 
@@ -455,8 +410,6 @@
       <classpath>
          <pathelement location="${ExternalComponentGenerator-class.dir}" />
          <pathelement location="${lib.dir}/json/json.jar" />
-         <fileset dir="${lib.dir}/ivy/lib" includes="**/*.jar" />
-         <pathelement location="out/libs/combined-jars/merged-libraries.jar" /> <!-- Include merged JAR -->
       </classpath>
    </java>
 </target>
