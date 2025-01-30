@@ -386,7 +386,7 @@
   </target>
 
 
-<taskdef name="ivy" classname="org.apache.ivy.ant.IvyAntTask">
+<taskdef resource="appinventor/ivy.xml" classpath="${ivy.jar}" />
   <classpath>
     <fileset dir="${lib.dir}/ivy" includes="ivy.jar"/>
   </classpath>
