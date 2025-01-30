@@ -386,18 +386,19 @@
   </target>
 
 
-<taskdef resource="appinventor/ivy.xml" classpath="${ivy.jar}" />
-  <classpath>
-    <fileset dir="${lib.dir}/ivy" includes="ivy.jar"/>
-  </classpath>
-</taskdef>
-     
+   <!-- Define Ivy task -->
+  <taskdef resource="appinventor/ivy.xml" classpath="${ivy.jar}">
+    <classpath>
+      <fileset dir="${lib.dir}/ivy" includes="ivy.jar"/>
+    </classpath>
+  </taskdef>
+
   <ivysettings>
-   <resolvers>
-    <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
-    <ibiblio name="jcenter" m2compatible="true" root="https://jcenter.bintray.com/" />
-   </resolvers>
- </ivysettings>
+    <resolvers>
+      <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
+      <ibiblio name="jcenter" m2compatible="true" root="https://jcenter.bintray.com/" />
+    </resolvers>
+  </ivysettings>
 
   <target name="resolveDependencies">
     <ivy:retrieve file="ivy.xml"/>
