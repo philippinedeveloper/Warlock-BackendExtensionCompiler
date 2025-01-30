@@ -14,6 +14,18 @@
 
   <taskdef resource="org/apache/ivy/ant/ivy-antlib.xml" classpath="${lib.dir}/ivy/ivy.jar"/>
 
+  <!-- Define Ivy settings -->
+  <ivysettings>
+    <resolvers>
+      <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
+      <ibiblio name="jcenter" m2compatible="true" root="https://jcenter.bintray.com/" />
+    </resolvers>
+  </ivysettings>
+
+  <target name="resolveDependencies">
+    <ivy:retrieve file="appinventor/ivy.xml"/>
+  </target>
+
   <property name="android.sdk.version" value="34"/>
 
   <target name="all"
@@ -385,18 +397,6 @@
     <jar basedir="${Barcode-class.dir}"
          destfile="${public.deps.dir}/Barcode.jar" />
 
-  </target>
-
-  <!-- Define Ivy settings -->
-  <ivysettings>
-    <resolvers>
-      <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
-      <ibiblio name="jcenter" m2compatible="true" root="https://jcenter.bintray.com/" />
-    </resolvers>
-  </ivysettings>
-
-  <target name="resolveDependencies">
-    <ivy:retrieve file="ivy.xml"/>
   </target>
      
  <target name="ExternalComponentGenerator" depends="resolveDependencies">
