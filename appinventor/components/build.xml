@@ -537,18 +537,9 @@
   </target>
 
 
-  <!-- =====================================================================
-      ProGuard: obfuscates and minifies the AndroidRuntime.jar file, containing
-                the extensions source code. Only runs if the task has been called
-                like "ant extensions -Dproguard=1".
-       ===================================================================== -->
-
-  <condition property="skipProguard">
-    <not>
-      <equals arg1="${proguard}" arg2="1" />
-    </not>
-  </condition>
-
+    <!-- =====================================================================
+       ProGuard: Obfuscates and optimizes using ProGuard
+  ===================================================================== -->
   <target name="ProGuard" unless="skipProguard">
     <taskdef resource="proguard/ant/task.properties"
              classpath="${lib.dir}/proguard/proguard.jar" />
@@ -572,11 +563,7 @@
       <!-- Android Runtime -->
       <libraryjar file="${public.build.dir}/AndroidRuntime.jar" />
 
-      <!-- FOR DEVELOPER: Add the needed libraries for your extension right here
-                          like the ones above, just after copying them to the deps
-                          directory.
-      <libraryjar file="${public.deps.dir}/my-awesome-library.jar" /> -->
-
+      <!-- FOR DEVELOPER: Add the needed libraries for your extension right here -->
       <dontnote filter="proguard.configuration.ConfigurationLogger" />
       <adaptresourcefilecontents filter="proguard/ant/task.properties" />
     </proguard>
@@ -588,8 +575,8 @@
 
   <!-- =====================================================================
     r8Optimize: Use R8 to optimize the extension's jar
-===================================================================== -->
-<target name="r8Optimize" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
+  ===================================================================== -->
+  <target name="r8Optimize" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
     <java classname="com.android.tools.r8.D8"
           fork="true"
           failonerror="true">
@@ -616,5 +603,35 @@
     <delete file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
     <move file="${ExternalComponent.dir}/${extensionClassFolder}_r.jar"
           tofile="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
-</target>
+  </target>
+
+  <!-- =====================================================================
+      optimizeExtension: Choose whether to use ProGuard or R8 for optimization
+  ===================================================================== -->
+  <target name="optimizeExtension" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
+    <!-- Check if ProGuard should be used -->
+    <condition property="useProGuard" value="true">
+      <equals arg1="${optimizeMethod}" arg2="proguard"/>
+    </condition>
+
+    <!-- Execute ProGuard optimization if 'optimizeMethod' is 'proguard' -->
+    <target if="useProGuard" refid="ProGuard"/>
+
+    <!-- Execute R8 optimization if 'optimizeMethod' is not 'proguard' -->
+    <target unless="useProGuard" refid="r8Optimize"/>
+  </target>
+
+  <!-- =====================================================================
+      extensions: Build the extensions (choose optimizer)
+  ===================================================================== -->
+  <target name="extensionsOptimize" depends="optimizeExtension">
+    <foreach target="packExtension" param="extension" inheritall="true">
+      <path>
+        <dirset dir="${ExternalComponent.dir}">
+          <include name="*" />
+        </dirset>
+      </path>
+    </foreach>
+  </target>
+
 </project>
