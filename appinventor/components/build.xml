@@ -391,8 +391,7 @@
     <fileset dir="${lib.dir}/ivy" includes="ivy.jar"/>
   </classpath>
 </taskdef>
-
-  <!-- Define the repositories for dependency resolution -->
+     
   <ivysettings>
    <resolvers>
     <ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
