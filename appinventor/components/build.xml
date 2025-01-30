@@ -585,4 +585,36 @@
     <move file="${ExternalComponent-class.dir}/${extensionClassFolder}_p.jar"
           tofile="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
   </target>
+
+  <!-- =====================================================================
+    r8Optimize: Use R8 to optimize the extension's jar
+===================================================================== -->
+<target name="r8Optimize" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
+    <java classname="com.android.tools.r8.D8"
+          fork="true"
+          failonerror="true">
+      <classpath>
+        <pathelement location="${lib.dir}/r8/r8.jar"/>
+      </classpath>
+
+      <!-- Specify the output location for the optimized classes -->
+      <arg line="--min-api 8"/>
+      <arg value="--output"/>
+      <arg value="${ExternalComponent.dir}/${extensionClassFolder}_r.jar"/>
+
+      <!-- Provide the original jar file to optimize -->
+      <arg value="${ExternalComponent-class.dir}/${extensionClassFolder}.jar"/>
+
+      <!-- R8 configuration file (same as proguard.cfg) -->
+      <arg line="--config ${lib.dir}/proguard/proguard.cfg"/>
+      <arg line="--dontwarn"/>
+    </java>
+
+    <echo>Optimized extension using R8: ${extensionClassFolder}</echo>
+
+    <!-- Replace original jar with the optimized one -->
+    <delete file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
+    <move file="${ExternalComponent.dir}/${extensionClassFolder}_r.jar"
+          tofile="${ExternalComponent-class.dir}/${extensionClassFolder}.jar" />
+</target>
 </project>
