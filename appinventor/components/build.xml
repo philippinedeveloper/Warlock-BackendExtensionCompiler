@@ -457,9 +457,6 @@
          basedir="${ExternalComponent-class.dir}/${extensionClassFolder}"
          includes="**/*.class"
          excludes="*.jar" />
-    <antcall target="ProGuard">
-      <param name="extensionClassFolder" value="${extensionClassFolder}" />
-    </antcall>
     <copy file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar"
           tofile="${ExternalComponent.dir}/${extensionClassFolder}/files/AndroidRuntime.jar"/>
     <echo>Generated build file AndroidRuntime.jar [${extensionClassFolder}]</echo>
