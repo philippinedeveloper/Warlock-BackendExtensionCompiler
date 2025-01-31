@@ -40,6 +40,8 @@
   <property name="ExternalComponentGenerator-class.dir" location="${class.dir}/ExternalComponentGenerator" />
   <property name="ExternalComponent.dir" location="${local.build.dir}/externalComponents" />
   <property name="ExternalComponent-class.dir" location="${local.build.dir}/externalComponents-class" />
+  <property name="Extensions.dir" location="${local.build.dir}/extensions" />
+  <!-- Can be used by extension authors to use the old-style AIX package layout -->
   <property name="extensions.packagefqcn" value="false" />
 
   <!-- =====================================================================
@@ -384,22 +386,24 @@
          destfile="${public.deps.dir}/Barcode.jar" />
 
   </target>
-     
-  <target name="ExternalComponentGenerator">
-   <mkdir dir="${ExternalComponentGenerator-class.dir}" />
-   <mkdir dir="${ExternalComponent.dir}" />
-   <mkdir dir="${ExternalComponent-class.dir}" />
 
-   <!-- Compile Java code with resolved dependencies -->
-   <ai.javac destdir="${ExternalComponentGenerator-class.dir}">
+
+  <!-- =====================================================================
+       ExternalComponentGenerator: create required extension files
+       ===================================================================== -->
+  <target name="ExternalComponentGenerator"
+          description="generate extension files"
+          depends="AndroidRuntime">
+    <mkdir dir="${ExternalComponentGenerator-class.dir}" />
+    <mkdir dir="${ExternalComponent.dir}" />
+    <mkdir dir="${ExternalComponent-class.dir}" />
+    <ai.javac destdir="${ExternalComponentGenerator-class.dir}">
       <include name="${components.pkg}/scripts/ExternalComponentGenerator.java" />
       <classpath>
-         <pathelement location="${lib.dir}/json/json.jar" />
+        <pathelement location="${lib.dir}/json/json.jar" />
       </classpath>
-   </ai.javac>
-
-   <!-- Run the Java task with resolved dependencies -->
-   <java classname="com.google.appinventor.components.scripts.ExternalComponentGenerator">
+    </ai.javac>
+    <java classname="com.google.appinventor.components.scripts.ExternalComponentGenerator">
       <arg value="${public.build.dir}/simple_components.json" />
       <arg value="${public.build.dir}/simple_components_build_info.json" />
       <arg value="${ExternalComponent.dir}"/>
@@ -408,11 +412,132 @@
       <arg value="${ExternalComponent-class.dir}"/>
       <arg value="${extensions.packagefqcn}"/>
       <classpath>
-         <pathelement location="${ExternalComponentGenerator-class.dir}" />
-         <pathelement location="${lib.dir}/json/json.jar" />
+        <pathelement location="${ExternalComponentGenerator-class.dir}" />
+        <pathelement location="${lib.dir}/json/json.jar" />
       </classpath>
-   </java>
-</target>
+    </java>
+  </target>
+
+  <!-- =====================================================================
+        unjarAllExtensionLibraries : Unjarring extension's library in order for the extensions'dex to work properly.
+        ===================================================================== -->
+  <target name="unjarAllExtensionLibraries" depends="ExternalComponentGenerator">
+    <foreach target="unjarExtensionLibraries" param="extension" inheritall="true">
+      <path>
+        <dirset dir="${ExternalComponent-class.dir}">
+          <include name="*" />
+        </dirset>
+      </path>
+    </foreach>
+  </target>
+
+  <target name="unjarExtensionLibraries">
+    <basename property="extensionClassFolder" file="${extension}" />
+    <unzip dest="${ExternalComponent-class.dir}/${extensionClassFolder}">
+      <fileset dir="${ExternalComponent-class.dir}/${extensionClassFolder}">
+        <include name="**/*.jar" />
+      </fileset>
+    </unzip>
+  </target>
+
+  <!-- =====================================================================
+       jarAllExtensions: create ${extension}.jar and AndroidRuntime.jar for each extension.
+       ===================================================================== -->
+  <target name="jarAllExtensions" depends="unjarAllExtensionLibraries" >
+    <foreach target="jarExtension" param="extension" inheritall="true">
+      <path>
+        <dirset dir="${ExternalComponent-class.dir}">
+          <include name="*" />
+        </dirset>
+      </path>
+    </foreach>
+  </target>
+
+  <target name="jarExtension">
+    <basename property="extensionClassFolder" file="${extension}" />
+    <jar destfile="${ExternalComponent-class.dir}/${extensionClassFolder}.jar"
+         basedir="${ExternalComponent-class.dir}/${extensionClassFolder}"
+         includes="**/*.class"
+         excludes="*.jar" />
+    <antcall target="ProGuard">
+      <param name="extensionClassFolder" value="${extensionClassFolder}" />
+    </antcall>
+    <copy file="${ExternalComponent-class.dir}/${extensionClassFolder}.jar"
+          tofile="${ExternalComponent.dir}/${extensionClassFolder}/files/AndroidRuntime.jar"/>
+    <echo>Generated build file AndroidRuntime.jar [${extensionClassFolder}]</echo>
+  </target>
+
+  <!-- =====================================================================
+       dexAllExtensions: create classes.dex for each extension.
+       ===================================================================== -->
+  <target name="dexAllExtensions" depends="jarAllExtensions">
+    <condition property="dextask" value="dexExtension" else="d8Extension">
+      <equals arg1="${lang.version}" arg2="8" />
+    </condition>
+    <foreach target="${dextask}" param="extension">
+      <path>
+        <fileset dir="${ExternalComponent-class.dir}" >
+          <include name="*.jar"/>
+        </fileset>
+      </path>
+    </foreach>
+  </target>
+
+  <target name="dexExtension">
+    <basename property="extensionType" file="${extension}" suffix=".jar"/>
+    <java jar="${lib.dir}/android/tools/dx.jar"
+          fork="true"
+          failonerror="true">
+      <arg value="--dex"/>
+      <arg value="--no-strict"/>
+      <arg value="--output"/>
+      <arg value="${ExternalComponent.dir}/${extensionType}/classes.jar"/>
+      <arg value="${ExternalComponent-class.dir}/${extensionType}.jar"/>
+    </java>
+    <echo>Dexing extension: ${extensionType}</echo>
+  </target>
+
+  <target name="d8Extension">
+    <basename property="extensionType" file="${extension}" suffix=".jar" />
+    <java classname="com.android.tools.r8.D8"
+          fork="true"
+          failonerror="true">
+      <classpath>
+        <pathelement location="${lib.dir}/android/tools/d8.jar"/>
+      </classpath>
+      <arg line="--lib ${lib.dir}/android/android-${android.sdk.version}/android.jar"/>
+      <arg line="--classpath ${public.build.dir}/AndroidRuntime.jar"/>
+      <arg line="--min-api 8"/> <!-- Extensions only available starting with SDK 8 -->
+      <arg value="--output"/>
+      <arg value="${ExternalComponent.dir}/${extensionType}/classes.jar"/>
+      <arg value="${ExternalComponent-class.dir}/${extensionType}.jar"/>
+    </java>
+    <echo>D8ing extension: ${extensionType}</echo>
+  </target>
+
+
+
+  <!-- =====================================================================
+      extensions: create ${extension}.aix for each external component.
+       ===================================================================== -->
+  <target name="packExtension">
+    <basename property="extensionType" file="${extension}" />
+    <zip destfile="${Extensions.dir}/${extensionType}.aix"
+         basedir="${ExternalComponent.dir}"
+         includes="${extensionType}/"
+    />
+  </target>
+
+  <target name="extensions" depends="ExternalComponentGenerator, jarAllExtensions, dexAllExtensions">
+    <mkdir dir="${Extensions.dir}" />
+    <foreach target="packExtension" param="extension" inheritall="true">
+      <path>
+        <dirset dir="${ExternalComponent.dir}">
+          <include name="*" />
+        </dirset>
+      </path>
+    </foreach>
+  </target>
 
 
   <!-- =====================================================================
