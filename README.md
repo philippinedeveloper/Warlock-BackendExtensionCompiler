@@ -4,7 +4,7 @@
 
 Supports:
 
-Java 8 for creating extensions (dx)
+Some tools made for Warlock, are not natively supported. You need to download the JAR files or access the tool via browsers (if the tool is a website).
 
 Java 11 for creating extensions (d8)
 
