@@ -4,6 +4,9 @@
 
 # Some tools made for Warlock in this list, are not natively supported. You need to download the JAR files or access the tool via browsers (if the tool is a website).
 ## Supports
+
+Java 8 for creating extensions (dx)
+
 Java 11 for creating extensions (d8)
 
 Offline extension building
@@ -26,7 +29,7 @@ UsesLibraries annotation
 
 <a href="https://philippinedeveloper.github.io/DocumentationWarlock/">Documentation generator</a>
 
-<a href="https://github.com/philippinedeveloper/WarlockDependencyResolver/releases/download/1/WarlockDependencyResolver.jar">Dependencies resolver</a>
+<a href="https://github.com/philippinedeveloper/WarlockDependencyResolver/releases/download/1.0.1/WarlockDependencyResolver.jar">Dependencies resolver</a>
 
 <a href="https://github.com/philippinedeveloper/JarFileSizeCalculator/releases/download/1.0.0/JarFileSizeCalculator.jar">File sizes of JAR calculator.</a> 
 
