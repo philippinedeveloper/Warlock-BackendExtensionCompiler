@@ -2,10 +2,8 @@
 
 **Warlock** is an MIT App Inventor Extension Builder that builds extensions. It doesn't need to be installed unlike Appinventor-Sources & It does not need Apache Ant at all!, The installation of Warlock offline is Optional, but I would reccomend building extensions using Warlock online.
 
-Supports:
-
-Some tools made for Warlock, are not natively supported. You need to download the JAR files or access the tool via browsers (if the tool is a website).
-
+# Some tools made for Warlock in this list, are not natively supported. You need to download the JAR files or access the tool via browsers (if the tool is a website).
+## Supports
 Java 11 for creating extensions (d8)
 
 Offline extension building
